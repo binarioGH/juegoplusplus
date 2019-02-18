@@ -22,6 +22,7 @@ int main(){
 			if(tecla ==DOWN )y+=1;
 			if(tecla == LEFT)x -=1;
 			if(tecla ==RIGHT )x+=1;
+			printf("(%i, %i)",x,y);
 		}
 
 	}
