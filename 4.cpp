@@ -15,12 +15,14 @@ private:
 public:
 	Guy(int _x, int _y);
 	void draw(void);
-	void clean(int _x, int _y);
-	void move(int _x, int _y);
+	void clean();
+	void move();
+	bool gameover = false;
 
 };
 Guy::Guy(int _x, int _y){
-	Guy::move(_x, _y);
+	x = _x;
+	y = _y;
 }
 
 void Guy::draw(void){
@@ -29,51 +31,41 @@ void Guy::draw(void){
 	gotoxy(x,y+2);printf("%c %c",47,92);
 	return;
 }
-void Guy::clean(int _x,int _y){
-	gotoxy(_x,_y);printf("  ");
-	gotoxy(_x,_y+1);printf("   ");
-	gotoxy(_x,_y+2);printf("   ");
+void Guy::clean(){
+	gotoxy(x,y);printf("  ");
+	gotoxy(x,y+1);printf("   ");
+	gotoxy(x,y+2);printf("   ");
 	return;
 }
-void Guy::move(int _x, int _y){
-	x = _x;
-	y = _y;
+void Guy::move(){
+	if(kbhit){
+		char key = getch();
+		clean();
+		if(key == 'w' || key==UP){
+			y -= 1;
+		}
+		if(key == 's' || key==DOWN){
+			y += 1;
+		}
+		if(key == 'a' || key==LEFT){
+			x -= 1;
+		}
+		if(key == 'd' || key==RIGHT){
+			x += 1;
+		}
+		if(key == 'q'){
+			gameover = true;
+		}
+		draw();
+	}
 	return ;
 }
 
 int main(){
-	int x = 10, y = 10;
-	bool gameover = false;
-	Guy mc = Guy(x, y);
-	while(!gameover){
-		mc.draw();
-		if(kbhit){
-			char key = getch();
-			//mc.clean(x, y);
-			if(key == 'w' || key==UP){
-				y -= 1;
-				mc.move(x,y);
-			}
-			if(key == 's' || key == DOWN){
-				y += 1;
-				mc.move(x,y);
-			}
-			if(key == 'a' || key == LEFT){
-				x -= 1;
-				mc.move(x,y);
-			}
-			if(key == 'd' || key == RIGHT){
-				x += 1;
-				mc.move(x,y);
-			}
-			if(key == 'q'){
-				gameover = true;
-
-			}
-
-		}
+	Guy mc = Guy(10, 10);
+	while(!mc.gameover){
+		mc.move();
 		Sleep(30);
-
 	}
 	return 0;
 }
