@@ -52,7 +52,7 @@ void Character::confirmPos(void){
 	if(x+1 >= 79){
 		x -=1;
 	}
-	if(x-1 <= 0){
+	if(x <= 0){
 		x += 1;
 	}
 	if(y+2 >= 25){

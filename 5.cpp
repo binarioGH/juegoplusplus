@@ -13,16 +13,22 @@ private:
 	int x, y;
 	void clean(void);
 	void confirmPos(void);
-	int body[6] = {30,47,124,92,47,92};
+	int health_points = 3;
+	int body[6] = {79,47,124,92,47,92};
 public:
 	Character(int _x, int _y);
 	bool alive = true;
+	void display_health(void);
 	void draw(void);
 	void move(void);
 };
 Character::Character(int _x, int _y){
 	x = _x;
 	y = _y;
+}
+void Character::display_health(void){
+	gotoxy(2,0);printf("Health: %i", health_points);
+	return;
 }
 void Character::clean(void){
 	gotoxy(x,y);printf("  ");
@@ -72,9 +78,11 @@ int main(){
 	drawborders();
 	hidecursor();
 	Character mc = Character(10, 10);
+	mc.display_health();
 	while(mc.alive){
 		mc.draw();
 		mc.move();
+		Sleep(30);
 	}
 	return 0;
 }
@@ -102,8 +110,8 @@ void drawborders(void){
 		gotoxy(x,22);printf("%c",205);
 	}
 	for(y;y<22;y++){
-		gotoxy(2,y);printf("%c",168);
-		gotoxy(77,y);printf("%c",168);
+		gotoxy(2,y);printf("%c",186);
+		gotoxy(77,y);printf("%c",186);
 	}
 	gotoxy(2,2);printf("%c", 201);
 	gotoxy(77,2);printf("%c",187);
