@@ -7,7 +7,7 @@
 #define RIGHT 77
 #define SPACE 32
 
-void gotoxy(int x, y);
+void gotoxy(int x,int	 y);
 void hideCursor(void);
 void drawBorders(void);
 
@@ -23,8 +23,9 @@ public:
 	Ship(int _x, int _y);
 	void display_health(void);
 	void draw(void);
-	void move(void);
+	void checkmove(void);
 	void death(void);
+	void move(char key);
 	bool gameover = false; 
 };
 Ship::Ship(int _x, int _y){
@@ -34,7 +35,7 @@ Ship::Ship(int _x, int _y){
 void Ship::clean(void){
 	int i = 0;
 	for(i;i<3;i++){
-		gotoxy(x,y);printf("     ");
+		gotoxy(x,y+i);printf("     ");
 	}
 	return;
 }
@@ -77,7 +78,7 @@ void Ship::confirmPos(void){
 	}
 	return;
 }
-void display_health(void){
+void Ship::display_health(void){
 	gotoxy(50,1);printf("VIDAS %d", vidas);
 	gotoxy(64,1);printf("Salud");
 	gotoxy(70,1);printf("      ");
@@ -92,12 +93,18 @@ void Ship::draw(void){
 	gotoxy(x,y+2);printf("%c%c %c%c",30,190,190,30);
 	return;
 }
-void Ship::move(void){
+void Ship::checkmove(void){
 	Ship::display_health();
 	if(kbhit()){
 		char key = getch();
-		Ship::clean();
-		switch(key){
+		Ship::move(key);
+		Ship::confirmPos();
+	}
+	return;
+}
+void Ship::move(char key){
+	Ship::clean();
+	switch(key){
 			case UP:y-=1;break;
 			case DOWN:y+=1;break;
 			case LEFT:x-=1;break;
@@ -108,10 +115,7 @@ void Ship::move(void){
 			case 'a':x-=1;break;
 			case 'd':x+=1;break;
 			case 'q':gameover = true;break;
-		}
-		Ship::confirmPos();
 	}
-	return;
 }
 void Ship::death(void){
 	bool death = false;
@@ -120,7 +124,7 @@ void Ship::death(void){
 		vidas -= 1;
 	}
 	if(vidas <= 0){
-		gameover = true
+		gameover = true;
 		death = true;
 	}
 	if(death){
@@ -145,7 +149,7 @@ void hideCursor(void){
 	CONSOLE_CURSOR_INFO cci;
 	cci.dwSize = 0;
 	cci.bVisible = FALSE;
-	SetConsoelCursorInfo(hCon, &cci);
+	SetConsoleCursorInfo(hCon, &cci);
 	return;
 }
 void drawborders(void){

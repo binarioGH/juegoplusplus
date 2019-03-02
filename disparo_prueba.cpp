@@ -34,7 +34,7 @@ Ship::Ship(int _x, int _y){
 void Ship::clean(void){
 	int i;
 	for(i=0;i<=2;i++){
-		gotoxy(x,y+i);printf("     ");
+		gotoxy(x,y+i);printf("        ");
 	}
 	return;
 }
@@ -67,24 +67,25 @@ void Ship::display_health(void){
 	return;
 }
 void Ship::death_animation(void){
-	int i;
-	for(i;i<50;i++){
-		if(i%2 == 0){
-			gotoxy(x,y);printf("***");
-			Sleep(500);
-
+	int counter = 0, i= 0;
+	int extra_shit = 42;
+	for(i;i<3;i++){
+		for(counter=0;counter<3;counter++){
+			gotoxy(x,y+counter);
+			if(counter==1){
+				printf("  %c%c%c%c ",extra_shit,extra_shit,extra_shit,extra_shit);
+			}
+			else{
+				printf("   %c%c   ",extra_shit,extra_shit);
+			}
 		}
-		else if(i%3 == 0){
-			gotoxy(x,y+2);printf("* * /");
-			Sleep(500);
-		}
-		else{
-			gotoxy(x,y+1);printf("* * *");
-			Sleep(500);
-		}
+		Sleep(200);
 		Ship::clean();
+		switch(i){
+			case 0: extra_shit = 221;break;
+			default: extra_shit-=1;break;
+		}
 	}
-	return;
 }
 void Ship::draw(void){
 	gotoxy(x,y);printf("  %c",30);
@@ -117,6 +118,7 @@ void Ship::death(void){
 	if(corazones <= 0 ){
 		vidas -= 1;
 		corazones = 3;
+		Ship::death_animation();
 	}
 	if(vidas <= 0){
 		gameover = true;
