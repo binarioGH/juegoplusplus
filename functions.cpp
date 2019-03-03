@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <windows.h>
+#include <stdlib.h>
 #define UP 72
 #define DOWN 80
 #define LEFT 75
@@ -10,7 +11,32 @@
 void gotoxy(int x,int	 y);
 void hideCursor(void);
 void drawBorders(void);
-
+class AST{
+private:
+	int x,y;
+public:
+	AST(int _x, int _y);
+	void draw(void);
+	void move(void);
+};
+AST::AST(int _x, int _y){
+	x = _x;
+	y = _y;
+}
+void AST::draw(void){
+	gotoxy(x,y);printf("%c", 184);
+	return;
+}
+void AST::move(void){
+	gotoxy(x,y);printf(" ");
+	y++;
+	if(y > 21){
+		x = rand()%73 + 4;
+		y = 4;
+	}
+	AST::draw();
+	return;
+}
 class Ship{
 private:
 	int x, y;
@@ -122,6 +148,7 @@ void Ship::death(void){
 	if(corazones <= 0){
 		death = true;
 		vidas -= 1;
+		corazones = 3;
 	}
 	if(vidas <= 0){
 		gameover = true;
