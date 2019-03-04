@@ -11,32 +11,7 @@
 void gotoxy(int x,int	 y);
 void hideCursor(void);
 void drawBorders(void);
-class AST{
-private:
-	int x,y;
-public:
-	AST(int _x, int _y);
-	void draw(void);
-	void move(void);
-};
-AST::AST(int _x, int _y){
-	x = _x;
-	y = _y;
-}
-void AST::draw(void){
-	gotoxy(x,y);printf("%c", 184);
-	return;
-}
-void AST::move(void){
-	gotoxy(x,y);printf(" ");
-	y++;
-	if(y > 21){
-		x = rand()%73 + 4;
-		y = 4;
-	}
-	AST::draw();
-	return;
-}
+
 class Ship{
 private:
 	int x, y;
@@ -52,6 +27,9 @@ public:
 	void checkmove(void);
 	void death(void);
 	void move(char key);
+	void hurt(int damage);
+	int X(void);
+	int Y(void);
 	bool gameover = false; 
 };
 Ship::Ship(int _x, int _y){
@@ -119,6 +97,12 @@ void Ship::draw(void){
 	gotoxy(x,y+2);printf("%c%c %c%c",30,190,190,30);
 	return;
 }
+int Ship::X(void){
+	return x;
+}
+int Ship::Y(void){
+	return y;
+}
 void Ship::checkmove(void){
 	Ship::display_health();
 	if(kbhit()){
@@ -128,6 +112,10 @@ void Ship::checkmove(void){
 	}
 	return;
 }
+void Ship::hurt(int damage){
+	corazones -= damage;
+	return; 
+}
 void Ship::move(char key){
 	Ship::clean();
 	switch(key){
@@ -135,7 +123,6 @@ void Ship::move(char key){
 			case DOWN:y+=1;break;
 			case LEFT:x-=1;break;
 			case RIGHT:x+=1;break;
-			case SPACE:corazones-=1;break;
 			case 'w':y-=1;break;
 			case 's':y+=1;break;
 			case 'a':x-=1;break;
@@ -159,7 +146,52 @@ void Ship::death(void){
 	}
 	return;
 }
-
+class AST{
+private:
+	int x,y;
+	void reload(void);
+public:
+	AST(int _x, int _y);
+	void draw(void);
+	void move(void);
+	void collision(class Ship &n);
+};
+AST::AST(int _x, int _y){
+	x = _x;
+	y = _y;
+}
+void AST::draw(void){
+	gotoxy(x,y);printf("%c", 184);
+	return;
+}
+void AST::reload(void){
+	x = rand()%73 + 4;
+	y = 4;
+}
+void AST::move(void){
+	gotoxy(x,y);printf(" ");
+	y++;
+	if(y > 21){
+		AST:reload();
+	}
+	AST::draw();
+	return;
+}
+void AST::collision(class Ship &n){
+	if(x == n.X() && y == n.Y()){
+		AST::reload();
+		n.hurt(2);
+	}
+	else if(x == n.X()-1 && y == n.Y() +1 || x == n.X()+1 && y == n.Y()-1){
+		AST::reload();
+		n.hurt(1);
+	}
+	else if(x == n.X() -2 && y == n.Y()+2 || x == n.X() -2 && y == n.Y() + 2){
+		AST::reload();
+		n.hurt(1);
+	}
+	return;
+}
 void gotoxy(int x, int y){
 	HANDLE hCon;
 	hCon = GetStdHandle(STD_OUTPUT_HANDLE);

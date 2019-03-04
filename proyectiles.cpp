@@ -5,7 +5,7 @@ using namespace std;
 void StartAnimation(Ship& nave);
 int main(int nArgs, char* ARGV[]){
 	system("cls");
-	hideCursor();
+	hideCursor();  
 	AST a1(10,4), a2(4,8), a3(15,10);
 	Ship ms = Ship(39, 26);
 	StartAnimation(ms);
@@ -14,6 +14,9 @@ int main(int nArgs, char* ARGV[]){
 		a1.move();
 		a2.move();
 		a3.move();
+		a1.collision(ms);
+		a2.collision(ms);
+		a3.collision(ms);
 		ms.draw();
 		ms.checkmove();
 		ms.death();
