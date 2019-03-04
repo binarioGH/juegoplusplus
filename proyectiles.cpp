@@ -1,4 +1,5 @@
-#include <iostream>
+#include <stdio.h>
+#include <list>
 #include <conio.h>
 #include "functions.cpp"
 using namespace std;
@@ -10,7 +11,24 @@ int main(int nArgs, char* ARGV[]){
 	Ship ms = Ship(39, 26);
 	StartAnimation(ms);
 	drawborders();
+	list<Bullet*> B;
+	list<Bullet*>::iterator it;
 	while(!ms.gameover){
+		if(kbhit()){
+			char key = getch();
+			if(key == 32){
+				B.push_back(new Bullet(ms.X()+2,ms.Y()-1));
+			}
+		}
+		for(it =B.begin();it!=B.end();it++){
+			 (*it)->move();
+			 if((*it)->out()){
+			 	gotoxy((*it)->GetX(), (*it)->GetY());
+			 	printf(" ");
+			 	delete(*it);
+			 	it = B.erase(it);
+			 }
+		}
 		a1.move();
 		a2.move();
 		a3.move();
@@ -32,10 +50,10 @@ void StartAnimation(Ship& nave){
 		nave.move('w');	
 	}
 	gotoxy(25,6);
-	cout<<"- G A L A X Y   D E F E N D E R -";
+	printf("- G A L A X Y   D E F E N D E R -");
 	for(i=27;i<56;i++){
 		gotoxy(i,7);
-		cout<<"_";
+		printf("_");
 		Sleep(100);
 	}
 	Sleep(3000);

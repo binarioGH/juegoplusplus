@@ -7,18 +7,44 @@
 #define LEFT 75
 #define RIGHT 77
 #define SPACE 32
-
 void gotoxy(int x,int	 y);
 void hideCursor(void);
 void drawBorders(void);
-
+class Bullet{
+private:
+	int x, y;
+public:
+	Bullet(int _x, int _y);
+	void move(void);
+	bool out(void);
+	int GetX(void);
+	int GetY(void);
+};
+Bullet::Bullet(int _x, int _y){
+	x = _x;
+	y = _y;
+}
+void Bullet::move(void){
+	gotoxy(x,y+1);printf(" ");
+	y--;
+	return;
+}
+int Bullet::GetX(void){
+	return x;
+}
+int Bullet::GetY(void){
+	return y;
+}
+bool Bullet::out(void){
+	if(y<=3)return true;
+	return false;
+}
 class Ship{
 private:
 	int x, y;
 	int vidas = 3, corazones = 3;
 	void clean(void);
 	void death_animation(void);
-	void shoot(void);
 	void confirmPos(void);
 public:
 	Ship(int _x, int _y);
@@ -63,9 +89,6 @@ void Ship::death_animation(void){
 			default: extra_shit-=1;break;
 		}
 	}
-}
-void Ship::shoot(void){
-	return;
 }
 void Ship::confirmPos(void){
 	if(x-1<=2){
@@ -178,15 +201,7 @@ void AST::move(void){
 	return;
 }
 void AST::collision(class Ship &n){
-	if(x == n.X() && y == n.Y()){
-		AST::reload();
-		n.hurt(2);
-	}
-	else if(x == n.X()-1 && y == n.Y() +1 || x == n.X()+1 && y == n.Y()-1){
-		AST::reload();
-		n.hurt(1);
-	}
-	else if(x == n.X() -2 && y == n.Y()+2 || x == n.X() -2 && y == n.Y() + 2){
+	if(x >= n.X() && x <= n.X()+5 && y >= n.Y() && y <= n.Y() +2){
 		AST::reload();
 		n.hurt(1);
 	}
