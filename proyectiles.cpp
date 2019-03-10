@@ -7,12 +7,16 @@ void StartAnimation(Ship& nave);
 int main(int nArgs, char* ARGV[]){
 	system("cls");
 	hideCursor();  
-	AST a1(10,4), a2(4,8), a3(15,10);
 	Ship ms = Ship(39, 26);
 	StartAnimation(ms);
 	drawborders();
 	list<Bullet*> B;
 	list<Bullet*>::iterator it;
+	list<AST*> A;
+	list<AST*>::iterator ita;
+	A.push_back(new AST(10,4));
+	A.push_back(new AST(4,8));
+	A.push_back(new AST(15,10));
 	int b = 0;
 	while(!ms.gameover){
 		if(kbhit()){
@@ -26,20 +30,32 @@ int main(int nArgs, char* ARGV[]){
 			 if((*it)->out()){
 			 	gotoxy((*it)->GetX(), (*it)->GetY()+2);
 			 	printf(" ");
-			 	gotoxy(0,24);
-			 	printf("                      ");
-			 	b++;
-			 	printf("Balas eliminadas: %i",b);
+
 			 	delete(*it);
 			 	it = B.erase(it);
+			 	continue;
+			 }
+			 for(ita=A.begin();ita!=A.end();ita++){
+			 	if((*ita)->X() == (*it)->GetX() && (*ita)->Y() == (*it)->GetY()){
+			 		(*ita)->reload();
+			 		gotoxy(0,24);
+			 		printf("                            ");
+			 		b++;
+			 		printf("Asteroides eliminados: %i",b);
+
+			 	}
 			 }
 		}
-		a1.move();
+		for(ita = A.begin();ita!=A.end();ita++){
+			(*ita)->move();
+			(*ita)->collision(ms);
+		}
+		/*a1.move();
 		a2.move();
 		a3.move();
 		a1.collision(ms);
 		a2.collision(ms);
-		a3.collision(ms);
+		a3.collision(ms);*/
 		ms.draw();
 		ms.checkmove();
 		ms.death();
@@ -62,7 +78,7 @@ void StartAnimation(Ship& nave){
 		printf("_");
 		Sleep(100);
 	}
-	Sleep(3000);
+	nave.death_animation();
 	system("cls");
 	return;
 }

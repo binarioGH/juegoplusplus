@@ -45,13 +45,13 @@ private:
 	int x, y;
 	int vidas = 3, corazones = 3;
 	void clean(void);
-	void death_animation(void);
 	void confirmPos(void);
 public:
 	Ship(int _x, int _y);
 	void display_health(void);
 	void draw(void);
 	void checkmove(void);
+	void death_animation(void);
 	void death(void);
 	void move(char key);
 	void hurt(int damage);
@@ -173,16 +173,24 @@ void Ship::death(void){
 class AST{
 private:
 	int x,y;
-	void reload(void);
 public:
 	AST(int _x, int _y);
+	void reload(void);
 	void draw(void);
 	void move(void);
 	void collision(class Ship &n);
+	int X(void);
+	int Y(void);
 };
 AST::AST(int _x, int _y){
 	x = _x;
 	y = _y;
+}
+int AST::X(void){
+	return x;
+}
+int AST::Y(void){
+	return y;
 }
 void AST::draw(void){
 	gotoxy(x,y);printf("%c", 184);
