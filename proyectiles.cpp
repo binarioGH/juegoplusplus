@@ -13,6 +13,7 @@ int main(int nArgs, char* ARGV[]){
 	drawborders();
 	list<Bullet*> B;
 	list<Bullet*>::iterator it;
+	int b = 0;
 	while(!ms.gameover){
 		if(kbhit()){
 			char key = getch();
@@ -23,8 +24,12 @@ int main(int nArgs, char* ARGV[]){
 		for(it =B.begin();it!=B.end();it++){
 			 (*it)->move();
 			 if((*it)->out()){
-			 	gotoxy((*it)->GetX(), (*it)->GetY());
+			 	gotoxy((*it)->GetX(), (*it)->GetY()+2);
 			 	printf(" ");
+			 	gotoxy(0,24);
+			 	printf("                      ");
+			 	b++;
+			 	printf("Balas eliminadas: %i",b);
 			 	delete(*it);
 			 	it = B.erase(it);
 			 }
@@ -49,6 +54,7 @@ void StartAnimation(Ship& nave){
 		Sleep(500);
 		nave.move('w');	
 	}
+	nave.draw();
 	gotoxy(25,6);
 	printf("- G A L A X Y   D E F E N D E R -");
 	for(i=27;i<56;i++){

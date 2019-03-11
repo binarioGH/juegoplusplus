@@ -25,7 +25,8 @@ Bullet::Bullet(int _x, int _y){
 	y = _y;
 }
 void Bullet::move(void){
-	gotoxy(x,y+1);printf(" ");
+	gotoxy(x,y+1);printf("*");
+	gotoxy(x,y+2);printf(" ");
 	y--;
 	return;
 }
